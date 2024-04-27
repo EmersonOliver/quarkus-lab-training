@@ -13,6 +13,7 @@ import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.Response;
 
 @Path("client")
@@ -41,6 +42,16 @@ public class ClienteResource {
     @GET
     public Response listAllClients(){
         return Response.ok(ClienteEntity.findAll().list()).build();
+    }
+
+    @GET
+    public Response findClientByDocument(@QueryParam("document") String document){
+        return Response.ok(ClienteEntity.find("docClient=?1", document).list()).build();
+    }
+
+    @GET
+    public Response findClientByName(@QueryParam("client") String client){
+        return Response.ok(ClienteEntity.find("clientName=?1", client).list()).build();
     }
 
 }
