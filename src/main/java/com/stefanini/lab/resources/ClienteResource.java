@@ -9,6 +9,7 @@ import com.stefanini.lab.entity.dto.ClientDto;
 
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
@@ -35,6 +36,11 @@ public class ClienteResource {
         return Response.ok(ClienteEntity.findAll().list())
                 .encoding("UTF-8")
                 .build();
+    }
+
+    @GET
+    public Response listAllClients(){
+        return Response.ok(ClienteEntity.findAll().list()).build();
     }
 
 }
