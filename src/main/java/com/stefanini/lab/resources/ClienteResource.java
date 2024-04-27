@@ -53,7 +53,7 @@ public class ClienteResource {
     @GET
     @Path("findByName")
     public Response findClientByName(@QueryParam("client") String client){
-        return Response.ok(ClienteEntity.find("clientName=?1", client).list()).build();
+        return Response.ok(ClienteEntity.find("clientName like ?1", "%"+client+"%").list()).build();
     }
 
 }
