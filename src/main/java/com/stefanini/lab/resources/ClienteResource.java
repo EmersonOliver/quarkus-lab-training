@@ -56,4 +56,10 @@ public class ClienteResource {
         return Response.ok(ClienteEntity.find("clientName like ?1", "%"+client+"%").list()).build();
     }
 
+    @GET
+    @Path("/ola")
+    public String olaMundo(){
+        return "Oi nene";
+    }
+
 }
