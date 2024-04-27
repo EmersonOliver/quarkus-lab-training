@@ -45,11 +45,13 @@ public class ClienteResource {
     }
 
     @GET
+    @Path("findByDocument")
     public Response findClientByDocument(@QueryParam("document") String document){
         return Response.ok(ClienteEntity.find("docClient=?1", document).list()).build();
     }
 
     @GET
+    @Path("findByName")
     public Response findClientByName(@QueryParam("client") String client){
         return Response.ok(ClienteEntity.find("clientName=?1", client).list()).build();
     }
