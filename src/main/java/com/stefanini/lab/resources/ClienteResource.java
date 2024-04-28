@@ -40,26 +40,20 @@ public class ClienteResource {
     }
 
     @GET
-    public Response listAllClients(){
+    public Response listAllClients() {
         return Response.ok(ClienteEntity.findAll().list()).build();
     }
 
     @GET
     @Path("findByDocument")
-    public Response findClientByDocument(@QueryParam("document") String document){
+    public Response findClientByDocument(@QueryParam("document") String document) {
         return Response.ok(ClienteEntity.find("docClient=?1", document).list()).build();
     }
 
     @GET
     @Path("findByName")
-    public Response findClientByName(@QueryParam("client") String client){
-        return Response.ok(ClienteEntity.find("clientName like ?1", "%"+client+"%").list()).build();
-    }
-
-    @GET
-    @Path("/ola")
-    public String olaMundo(){
-        return "Oi nene";
+    public Response findClientByName(@QueryParam("client") String client) {
+        return Response.ok(ClienteEntity.find("clientName like ?1", "%" + client + "%").list()).build();
     }
 
 }
