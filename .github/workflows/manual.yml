@@ -11,13 +11,43 @@ on:
       versionName:
         description: 'Version (ie 0.0.1)'
         required: true
+      dockerRegistry:
+        description: 'dockerhub/applicationName'
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "greet"
-  create_relase_branch:
-    # The type of runner that the job will run on
-    uses: EmersonOliver/devops-java-workflow/.github/workflows/create_release_branch.yml@1.0.0
-    with:
-      versionName: ${{github.event.inputs.versionName}}
-    secrets: inherit
+  create_release_branch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v3
+
+      - name: Create release branch
+        run: |
+          git config --global user.email "you@example.com"
+          git config --global user.name "Your Name"
+          git checkout main
+          git pull origin main
+          git checkout -b release/${{ github.event.inputs.versionName }}
+          git push origin release/${{ github.event.inputs.versionName }}
+  build:
+    runs-on: ubuntu-latest
+    needs: create_release_branch
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Docker Login
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+        run: docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+      - name: Criando Imagem docker
+        run: |
+          docker build -t ${{ github.event.inputs.dockerRegistry }}:latest -t ${{ github.event.inputs.dockerRegistry }}:${{ github.event.inputs.versionName }} ./
+
+      - name: Docker Push latest
+        run: docker push ${{ github.event.inputs.dockerRegistry }}:latest
+
+      - name: Docker Push versioned
+        run: docker push ${{ github.event.inputs.dockerRegistry }}:${{ github.event.inputs.versionName }}
