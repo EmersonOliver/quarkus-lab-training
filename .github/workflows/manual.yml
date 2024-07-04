@@ -27,8 +27,8 @@ jobs:
         run: |
           git config --global user.email "emerson-developer@outlook.com"
           git config --global user.name "Emerson Oliveira"
-          git checkout main
-          git pull origin main
+          git checkout master
+          git pull origin master
           git checkout -b release/${{ github.event.inputs.versionName }}
           git push origin release/${{ github.event.inputs.versionName }}
   build:
