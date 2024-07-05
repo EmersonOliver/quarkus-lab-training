@@ -2,10 +2,8 @@ package com.stefanini.lab.resources;
 
 import java.util.Optional;
 
-import org.hibernate.mapping.List;
-
 import com.stefanini.lab.entity.ClienteEntity;
-import com.stefanini.lab.entity.dto.ClientDto;
+import com.stefanini.lab.record.ClientInputReq;
 
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.Consumes;
@@ -23,15 +21,15 @@ public class ClienteResource {
 
     @POST
     @Transactional
-    public Response insert(ClientDto req) {
-        Optional<ClienteEntity> optionalClient = ClienteEntity.find("clientName=?1", req.getClientName())
+    public Response insert(ClientInputReq req) {
+        Optional<ClienteEntity> optionalClient = ClienteEntity.find("clientName=?1", req.name())
                 .firstResultOptional();
         optionalClient.ifPresentOrElse(x -> {
             System.out.println("Client já cadastrado!");
         }, () -> {
             ClienteEntity client = new ClienteEntity();
-            client.setClientName(req.getClientName());
-            client.setDocClient(req.getDocClient());
+            client.setClientName(req.name());
+            client.setDocClient(req.document());
             client.persist();
         });
         return Response.ok(ClienteEntity.findAll().list())

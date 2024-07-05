@@ -15,7 +15,12 @@ import jakarta.persistence.Table;
 @Table(name = "tb_cliente")
 public class ClienteEntity extends PanacheEntityBase implements Serializable {
 
-    @Id
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	@Id
     @Column(name = "uuid_client")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID uuidClient;
